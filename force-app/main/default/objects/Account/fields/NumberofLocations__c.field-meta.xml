@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Quantity__c</fullName>
-    <description>Opportunity Number field</description>
+    <fullName>NumberofLocations__c</fullName>
     <externalId>false</externalId>
-    <label>Quantity</label>
-    <precision>18</precision>
+    <label>Number of Locations</label>
+    <precision>3</precision>
     <required>false</required>
-    <scale>2</scale>
-    <trackTrending>false</trackTrending>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
     <type>Number</type>
     <unique>false</unique>
 </CustomField>
