@@ -7,10 +7,10 @@ public with sharing class opportunityAndWebOrderActionTriggerTests {
 
         List<Opportunity> newOpportunityList = new List<Opportunity>();
         for(Integer opportunityCount = 0; opportunityCount < 3; opportunityCount++) {
-        newOpportunityList.Add(new Opportunity(
-            Name = opportunityName + opportunityCount, 
-            CloseDate = System.today(), 
-            StageName = StageNameProspecting));
+            newOpportunityList.Add(new Opportunity(
+                Name = opportunityName + opportunityCount, 
+                CloseDate = System.today(), 
+                StageName = StageNameProspecting));
         }
 
         Test.startTest();
@@ -58,10 +58,10 @@ public with sharing class opportunityAndWebOrderActionTriggerTests {
 
         List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
         for(Integer webOrderCount = 0; webOrderCount < 3; webOrderCount++) {
-        newWebOrderList.Add(new WebOrder__c(
-            Name = webOrderName + webOrderCount, 
-            CloseDate__c = System.today(), 
-            StageName__c = StageNameProspecting));
+            newWebOrderList.Add(new WebOrder__c(
+                Name = webOrderName + webOrderCount, 
+                CloseDate__c = System.today(), 
+                StageName__c = StageNameProspecting));
         }
 
         Test.startTest();

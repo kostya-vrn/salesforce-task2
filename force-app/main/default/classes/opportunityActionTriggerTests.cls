@@ -121,7 +121,7 @@ public with sharing class opportunityActionTriggerTests {
         List<Opportunity> updatedOpportunityList = [SELECT Id, Name, CloseDate, StageName FROM Opportunity WHERE Id = :newOpportunity.Id];
         List<WebOrder__c> updatedWebOrderList = [SELECT Id, Name, CloseDate__c, StageName__c FROM WebOrder__c WHERE OpportunityId__c = :newOpportunity.Id];
         Test.stopTest();        
-д
+
         System.assert(result.isSuccess());
         System.assertEquals(1, updatedOpportunityList.size());
         System.assertEquals(1, updatedWebOrderList.size());

@@ -32,10 +32,12 @@ trigger opportunityActionTrigger on Opportunity (after insert, after delete, aft
             WebOrder__c webOrder = CopyObjectByFieldSetsHelper.getWebOrderByOpportunityId(opportunity.Id, existedWebOrdersList);
 
             if (webOrder == null || 
-                !CopyObjectByFieldSetsHelper.compareOpportunityAndWebObjectFields(opportunity, 
-                                                                                    opportunityFieldsList, 
-                                                                                    webOrderFieldsList, 
-                                                                                    webOrder)) {
+                !CopyObjectByFieldSetsHelper.compareOpportunityAndWebObjectFields(
+                    opportunity, 
+                    opportunityFieldsList, 
+                    webOrderFieldsList, 
+                    webOrder)
+            ) {
                 webOrder = webOrder != null ? webOrder : new WebOrder__C();
 
                 webOrder = CopyObjectByFieldSetsHelper.patchWebOrder(opportunity, opportunityFieldsList, webOrderFieldsList, webOrder);

@@ -31,10 +31,13 @@ trigger webOrderActionTrigger on WebOrder__C (after insert, after delete, after 
         for(WebOrder__c webOrder: Trigger.New) {
             Opportunity opportunity = CopyObjectByFieldSetsHelper.getOpportunityByWebOrderId(webOrder.Id, existedOpportunityList);
 
-            if (opportunity == null || !CopyObjectByFieldSetsHelper.compareWebObjectAndOpportunityFields(opportunity, 
-                                                                                                            webOrderFieldsList, 
-                                                                                                            opportunityFieldsList, 
-                                                                                                            webOrder)) {
+            if (opportunity == null || 
+                !CopyObjectByFieldSetsHelper.compareWebObjectAndOpportunityFields(
+                    opportunity, 
+                    webOrderFieldsList, 
+                    opportunityFieldsList, 
+                    webOrder)
+            ) {
                 opportunity = opportunity != null ? opportunity : new Opportunity();
 
                 opportunity = CopyObjectByFieldSetsHelper.patchOpportunity(opportunity, webOrderFieldsList, opportunityFieldsList, webOrder);
