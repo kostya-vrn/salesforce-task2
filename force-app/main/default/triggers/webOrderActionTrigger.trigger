@@ -11,7 +11,7 @@ trigger webOrderActionTrigger on WebOrder__C (after insert, after delete, after 
                 continue;
             }
 
-            Opportunity newOpportunity = CopyObjectByFieldSetsHelper.putOpportunityFields(null, webOrderFieldsList, opportunityFieldsList, webOrder);
+            Opportunity newOpportunity = CopyObjectByFieldSetsHelper.patchOpportunity(null, webOrderFieldsList, opportunityFieldsList, webOrder);
             newOpportunitiesList.add(newOpportunity);
         }
 
@@ -20,7 +20,9 @@ trigger webOrderActionTrigger on WebOrder__C (after insert, after delete, after 
 
     if (Trigger.isUpdate) {
         Set<Id> webOrderIdsList = (new Map<Id, WebOrder__c>(Trigger.New)).keySet();
-        String opportunityQuery = 'SELECT Id, WebOrderId__c, ' + String.Join(opportunityFieldsList, ', ') + ' FROM Opportunity WHERE WebOrderId__c IN :webOrderIdsList';
+        List<Id> opportunityIdsList = CopyObjectByFieldSetsHelper.getOpportunityIdList(Trigger.New);
+
+        String opportunityQuery = 'SELECT Id, WebOrderId__c, ' + String.Join(opportunityFieldsList, ', ') + ' FROM Opportunity WHERE WebOrderId__c IN :webOrderIdsList OR Id IN :opportunityIdsList';
         List<Opportunity> existedOpportunityList = (List<Opportunity>)(Database.query(opportunityQuery));
 
         List<Opportunity> opportunitiesList = new List<Opportunity>();
@@ -33,7 +35,7 @@ trigger webOrderActionTrigger on WebOrder__C (after insert, after delete, after 
                 System.debug('Update');
                 opportunity = opportunity != null ? opportunity : new Opportunity();
 
-                opportunity = CopyObjectByFieldSetsHelper.putOpportunityFields(opportunity, webOrderFieldsList, opportunityFieldsList, webOrder);
+                opportunity = CopyObjectByFieldSetsHelper.patchOpportunity(opportunity, webOrderFieldsList, opportunityFieldsList, webOrder);
                 opportunitiesList.add(opportunity);
             }
         }
@@ -43,13 +45,8 @@ trigger webOrderActionTrigger on WebOrder__C (after insert, after delete, after 
     }
 
     if (Trigger.isDelete) {
-        List<Id> opportunityIdsList = new List<Id>();
         Set<Id> webOrderIdList = (new Map<Id, WebOrder__c>(Trigger.Old)).keySet();
-        for(WebOrder__c webOrder : Trigger.Old) {
-            if (webOrder.OpportunityId__c == null) { continue; }
-
-            opportunityIdsList.add(webOrder.OpportunityId__c);
-        }
+        List<Id> opportunityIdsList = CopyObjectByFieldSetsHelper.getOpportunityIdList(Trigger.Old);
 
         List<Opportunity> opportunityList = [SELECT Id FROM Opportunity WHERE WebOrderId__c IN :webOrderIdList OR Id IN :opportunityIdsList];
         delete opportunityList;
