@@ -1,12 +1,15 @@
 @isTest
 public with sharing class opportunityAndWebOrderActionTriggerTests {
-    @isTest static void createFewOpportunityDeleteFewWebOrderTest() {
-        List<Opportunity> newOpportunityList = new List<Opportunity>();
+    private static String StageNameProspecting = 'Prospecting';
 
+    @isTest static void createFewOpportunityDeleteFewWebOrderTest() {
+        String opportunityName = 'createFewOpportunityDeleteFewWebOrderTest';
+
+        List<Opportunity> newOpportunityList = new List<Opportunity>();
         for(Integer opportunityCount = 0; opportunityCount < 3; opportunityCount++) {
-        newOpportunityList.Add(new Opportunity(Name = 'deleteFewOpportunityTest' + opportunityCount, 
+        newOpportunityList.Add(new Opportunity(Name = opportunityName + opportunityCount, 
                                                 CloseDate = System.today(), 
-                                                StageName = 'Prospecting'));
+                                                StageName = StageNameProspecting));
         }
 
         Test.startTest();
@@ -27,9 +30,11 @@ public with sharing class opportunityAndWebOrderActionTriggerTests {
     }
 
     @isTest static void createOpportunityDeleteWebOrderTest() {
-        Opportunity newOpportunity = new Opportunity(Name = 'deleteOpportunityTest', 
+        String opportunityName = 'createOpportunityDeleteWebOrderTest';
+
+        Opportunity newOpportunity = new Opportunity(Name = opportunityName, 
                                                         CloseDate = System.today(), 
-                                                        StageName = 'Prospecting');
+                                                        StageName = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newOpportunity, false);
@@ -47,12 +52,13 @@ public with sharing class opportunityAndWebOrderActionTriggerTests {
     }
 
     @isTest static void createFewWebOrderDeleteFewOpportunityTest() {
-        List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
+        String webOrderName = 'createFewWebOrderDeleteFewOpportunityTest';
 
+        List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
         for(Integer webOrderCount = 0; webOrderCount < 3; webOrderCount++) {
-        newWebOrderList.Add(new WebOrder__c(Name = 'createFewWebOrderDeleteFewOpportunityTest' + webOrderCount, 
+        newWebOrderList.Add(new WebOrder__c(Name = webOrderName + webOrderCount, 
                                                 CloseDate__c = System.today(), 
-                                                StageName__c = 'Prospecting'));
+                                                StageName__c = StageNameProspecting));
         }
 
         Test.startTest();
@@ -73,9 +79,10 @@ public with sharing class opportunityAndWebOrderActionTriggerTests {
     }
 
     @isTest static void createWebOrderDeleteOpportunityTest() {
-        WebOrder__c newWebOrder = new WebOrder__c(Name = 'createWebOrderDeleteOpportunityTest', 
+        String webOrderName = 'createWebOrderDeleteOpportunityTest';
+        WebOrder__c newWebOrder = new WebOrder__c(Name = webOrderName, 
                                                         CloseDate__c = System.today(), 
-                                                        StageName__c = 'Prospecting');
+                                                        StageName__c = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newWebOrder, false);

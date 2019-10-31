@@ -2,11 +2,14 @@
 public with sharing class opportunityActionTriggerTests {
 
     private static String UpdatePostfix = '_updated';
+    private static String StageNameProspecting = 'Prospecting';
 
     @isTest static void createOneOpportunityTest() {
-        Opportunity newOpportunity = new Opportunity(Name = 'createOneOpportunityTest', 
+        String opportunityName = 'createOneOpportunityTest';
+
+        Opportunity newOpportunity = new Opportunity(Name = opportunityName, 
                                                     CloseDate = System.today(), 
-                                                    StageName = 'Prospecting');
+                                                    StageName = StageNameProspecting);
         Test.startTest();
         Database.SaveResult result = Database.insert(newOpportunity, false);
         List<WebOrder__c> createdWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c FROM WebOrder__c WHERE OpportunityId__c = :newOpportunity.Id];
@@ -22,12 +25,13 @@ public with sharing class opportunityActionTriggerTests {
     }
 
     @isTest static void createFewOpportunityTest() {
-        List<Opportunity> newOpportunityList = new List<Opportunity>();
+        String opportunityName = 'createFewOpportunityTest';
 
+        List<Opportunity> newOpportunityList = new List<Opportunity>();
         for(Integer opportunityCount = 0; opportunityCount < 3; opportunityCount++) {
-            newOpportunityList.Add(new Opportunity(Name = 'createFewOpportunityTest' + opportunityCount, 
+            newOpportunityList.Add(new Opportunity(Name = opportunityName + opportunityCount, 
                                                     CloseDate = System.today(), 
-                                                    StageName = 'Prospecting'));
+                                                    StageName = StageNameProspecting));
         }
         Test.startTest();
         List<Database.SaveResult> resultList = Database.insert(newOpportunityList, false);
@@ -49,12 +53,13 @@ public with sharing class opportunityActionTriggerTests {
     }
 
     @isTest static void deleteFewOpportunityTest() {
-        List<Opportunity> newOpportunityList = new List<Opportunity>();
+        String opportunityName = 'deleteFewOpportunityTest';
 
+        List<Opportunity> newOpportunityList = new List<Opportunity>();
         for(Integer opportunityCount = 0; opportunityCount < 3; opportunityCount++) {
-            newOpportunityList.Add(new Opportunity(Name = 'deleteFewOpportunityTest' + opportunityCount, 
+            newOpportunityList.Add(new Opportunity(Name = opportunityName + opportunityCount, 
                                                     CloseDate = System.today(), 
-                                                    StageName = 'Prospecting'));
+                                                    StageName = StageNameProspecting));
         }
 
         Test.startTest();
@@ -73,9 +78,11 @@ public with sharing class opportunityActionTriggerTests {
     }
 
     @isTest static void deleteOpportunityTest() {
-        Opportunity newOpportunity = new Opportunity(Name = 'deleteOpportunityTest', 
+        String opportunityName = 'deleteOpportunityTest';
+
+        Opportunity newOpportunity = new Opportunity(Name = opportunityName, 
                                                         CloseDate = System.today(), 
-                                                        StageName = 'Prospecting');
+                                                        StageName = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newOpportunity, false);
@@ -90,9 +97,11 @@ public with sharing class opportunityActionTriggerTests {
     }
 
     @isTest static void updateOneOpportunityTest() {
-        Opportunity newOpportunity = new Opportunity(Name = 'updateOneOpportunityTest', 
+        String opportunityName = 'updateOneOpportunityTest';
+
+        Opportunity newOpportunity = new Opportunity(Name = opportunityName, 
                                                     CloseDate = System.today(), 
-                                                    StageName = 'Prospecting');
+                                                    StageName = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newOpportunity, false);
@@ -116,12 +125,13 @@ public with sharing class opportunityActionTriggerTests {
     }
 
     @isTest static void updateFewOpportunityTest() {
-        List<Opportunity> newOpportunityList = new List<Opportunity>();
+        String opportunityName = 'updateFewOpportunityTest';
 
+        List<Opportunity> newOpportunityList = new List<Opportunity>();
         for(Integer opportunityCount = 0; opportunityCount < 3; opportunityCount++) {
-            newOpportunityList.Add(new Opportunity(Name = 'updateFewOpportunityTest' + opportunityCount, 
+            newOpportunityList.Add(new Opportunity(Name = opportunityName + opportunityCount, 
                                                     CloseDate = System.today(), 
-                                                    StageName = 'Prospecting'));
+                                                    StageName = StageNameProspecting));
         }
 
         Test.startTest();
