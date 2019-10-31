@@ -6,9 +6,11 @@ public with sharing class webOrderActionTriggerTests {
     @isTest static void createOneWebOrderTest() {
         String webOrderName = 'createOneWebOrderTest';
 
-        WebOrder__c newWebOrder = new WebOrder__c(Name = webOrderName, 
-                                                    CloseDate__c = System.today(), 
-                                                    StageName__c = StageNameProspecting);
+        WebOrder__c newWebOrder = new WebOrder__c(
+            Name = webOrderName, 
+            CloseDate__c = System.today(), 
+            StageName__c = StageNameProspecting);
+
         Test.startTest();
         Database.SaveResult result = Database.insert(newWebOrder, false);
         List<Opportunity> createdOpportunitysList = [SELECT Id, Name, CloseDate, StageName FROM Opportunity WHERE WebOrderId__c = :newWebOrder.Id];
@@ -28,9 +30,10 @@ public with sharing class webOrderActionTriggerTests {
 
         List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
         for(Integer webOrderCount = 0; webOrderCount < 3; webOrderCount++) {
-            newWebOrderList.Add(new WebOrder__c(Name = webOrderName + webOrderCount, 
-                                                    CloseDate__c = System.today(), 
-                                                    StageName__c = StageNameProspecting));
+            newWebOrderList.Add(new WebOrder__c(
+                Name = webOrderName + webOrderCount, 
+                CloseDate__c = System.today(), 
+                StageName__c = StageNameProspecting));
         }
 
         Test.startTest();
@@ -39,16 +42,17 @@ public with sharing class webOrderActionTriggerTests {
         List<Opportunity> createdOpportunityList = [SELECT Id, Name, CloseDate, StageName, WebOrderId__c FROM Opportunity WHERE WebOrderId__c IN :webOrderIdSet];
         Test.stopTest();
 
-        for(Database.SaveResult result : resultList) {
+        for(Database.SaveResult result: resultList) {
             System.assert(result.isSuccess());
         }
         System.assertEquals(3, createdOpportunityList.size());
 
-        for(Opportunity opportunity : createdOpportunityList) {
-            System.assert(newWebOrderList.contains(new WebOrder__c(Id = opportunity.WebOrderId__c, 
-                                                                        Name = opportunity.Name,
-                                                                        CloseDate__c = opportunity.CloseDate,
-                                                                        StageName__c = opportunity.StageName)));
+        for(Opportunity opportunity: createdOpportunityList) {
+            System.assert(newWebOrderList.contains(new WebOrder__c(
+                Id = opportunity.WebOrderId__c, 
+                Name = opportunity.Name,
+                CloseDate__c = opportunity.CloseDate,
+                StageName__c = opportunity.StageName)));
         }
     }
 
@@ -57,9 +61,10 @@ public with sharing class webOrderActionTriggerTests {
 
         List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
         for(Integer webOrderCount = 0; webOrderCount < 3; webOrderCount++) {
-            newWebOrderList.Add(new WebOrder__c(Name = webOrderName + webOrderCount, 
-                                                    CloseDate__c = System.today(), 
-                                                    StageName__c = StageNameProspecting));
+            newWebOrderList.Add(new WebOrder__c(
+                Name = webOrderName + webOrderCount, 
+                CloseDate__c = System.today(), 
+                StageName__c = StageNameProspecting));
         }
 
         Test.startTest();
@@ -71,7 +76,7 @@ public with sharing class webOrderActionTriggerTests {
         List<Opportunity> opportunitiesList = [SELECT Id, Name FROM Opportunity WHERE WebOrderId__c IN :webOrderIdSet];
         Test.stopTest();
 
-        for(Database.DeleteResult result : deleteResultList) {
+        for(Database.DeleteResult result: deleteResultList) {
             System.assert(result.isSuccess());
         }
         System.assertEquals(0, opportunitiesList.size());
@@ -81,9 +86,10 @@ public with sharing class webOrderActionTriggerTests {
     @isTest static void deleteWebOrderTest() {
         String webOrderName = 'deleteWebOrderTest';
 
-        WebOrder__c newWebOrder = new WebOrder__c(Name = webOrderName, 
-                                                        CloseDate__c = System.today(), 
-                                                        StageName__c = StageNameProspecting);
+        WebOrder__c newWebOrder = new WebOrder__c(
+            Name = webOrderName, 
+            CloseDate__c = System.today(), 
+            StageName__c = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newWebOrder, false);
@@ -101,9 +107,10 @@ public with sharing class webOrderActionTriggerTests {
     @isTest static void updateOneWebOrderTest() {
         String webOrderName = 'updateOneWebOrderTest';
 
-        WebOrder__c newWebOrder = new WebOrder__C(Name = webOrderName, 
-                                                    CloseDate__c = System.today(), 
-                                                    StageName__c = StageNameProspecting);
+        WebOrder__c newWebOrder = new WebOrder__C(
+            Name = webOrderName, 
+            CloseDate__c = System.today(), 
+            StageName__c = StageNameProspecting);
 
         Test.startTest();
         Database.insert(newWebOrder, false);
@@ -131,14 +138,15 @@ public with sharing class webOrderActionTriggerTests {
 
         List<WebOrder__c> newWebOrderList = new List<WebOrder__c>();
         for(Integer webOrderCount = 0; webOrderCount < 3; webOrderCount++) {
-            newWebOrderList.Add(new WebOrder__c(Name = webOrderName + webOrderCount, 
-                                                    CloseDate__c = System.today(), 
-                                                    StageName__c = StageNameProspecting));
+            newWebOrderList.Add(new WebOrder__c(
+                Name = webOrderName + webOrderCount, 
+                CloseDate__c = System.today(), 
+                StageName__c = StageNameProspecting));
         }
 
         Test.startTest();
         Database.insert(newWebOrderList, false);
-        for(WebOrder__c webOrder : newWebOrderList) {
+        for(WebOrder__c webOrder: newWebOrderList) {
             webOrder.Name += UpdatePostfix;
         }
 
@@ -149,24 +157,26 @@ public with sharing class webOrderActionTriggerTests {
         List<Opportunity> updatedOpportunityList = [SELECT Id, Name, CloseDate, StageName, WebOrderId__c FROM Opportunity WHERE WebOrderId__c IN :webOrderIdSet];
         Test.stopTest();
 
-        for(Database.SaveResult result : resultList) {
+        for(Database.SaveResult result: resultList) {
             System.assert(result.isSuccess());
         }
         System.assertEquals(3, updatedOpportunityList.size());
         System.assertEquals(3, updatedWebOrderList.size());
 
-        for(WebOrder__c webOrder : updatedWebOrderList) {
-            System.assert(newWebOrderList.contains(new WebOrder__c(Id = webOrder.Id, 
-                                                                        Name = webOrder.Name,
-                                                                        CloseDate__c = webOrder.CloseDate__c,
-                                                                        StageName__c = webOrder.StageName__c)));
+        for(WebOrder__c webOrder: updatedWebOrderList) {
+            System.assert(newWebOrderList.contains(new WebOrder__c(
+                Id = webOrder.Id, 
+                Name = webOrder.Name,
+                CloseDate__c = webOrder.CloseDate__c,
+                StageName__c = webOrder.StageName__c)));
         }
 
-        for(Opportunity opportunity : updatedOpportunityList) {
-            System.assert(newWebOrderList.contains(new WebOrder__c(Id = opportunity.WebOrderId__c, 
-                                                                        Name = opportunity.Name,
-                                                                        CloseDate__c = opportunity.CloseDate,
-                                                                        StageName__c = opportunity.StageName)));
+        for(Opportunity opportunity: updatedOpportunityList) {
+            System.assert(newWebOrderList.contains(new WebOrder__c(
+                Id = opportunity.WebOrderId__c, 
+                Name = opportunity.Name,
+                CloseDate__c = opportunity.CloseDate,
+                StageName__c = opportunity.StageName)));
         }
     }
 }

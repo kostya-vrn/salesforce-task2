@@ -3,33 +3,43 @@ public with sharing class CopyObjectByFieldSetsHelper {
     public static String FieldNameCustomPart = '__c';
 
     //region patch methods
-    public static WebOrder__c patchWebOrder(Opportunity opportunity, Set<String> fromFieldsList, List<String> toFieldsList, WebOrder__c webOrder) {
+    public static WebOrder__c patchWebOrder(
+        Opportunity opportunity, 
+        Set<String> fromFieldsList, 
+        List<String> toFieldsList, 
+        WebOrder__c webOrder
+    ) {
         webOrder = webOrder != null ? webOrder : new WebOrder__c();
 
-        for(String webOrderField : toFieldsList) {
+        for(String webOrderField: toFieldsList) {
             String ooprtunityField = getWebOrderFieldApi(webOrderField, fromFieldsList);
 
             if (ooprtunityField != null) {
                 webOrder.put(webOrderField, opportunity.get(ooprtunityField));
             }
         }
-
         webOrder.OpportunityId__c = opportunity.Id;
+
         return webOrder;
     }
 
-    public static Opportunity patchOpportunity(Opportunity opportunity, Set<String> fromFieldsList, List<String> toFieldsList, WebOrder__c webOrder) {
+    public static Opportunity patchOpportunity(
+        Opportunity opportunity, 
+        Set<String> fromFieldsList, 
+        List<String> toFieldsList, 
+        WebOrder__c webOrder
+    ) {
         opportunity = opportunity != null ? opportunity : new Opportunity();
 
-        for(String opportunityField : toFieldsList) {
+        for(String opportunityField: toFieldsList) {
             String webOrderField = getOpportunityFieldApi(opportunityField, fromFieldsList);
 
-            System.debug('webOrderField: ' + webOrderField + ' opportunityField: ' + opportunityField);
             if (webOrderField != null) {
                 opportunity.put(opportunityField, webOrder.get(webOrderField));
             }
         }
         opportunity.WebOrderId__c = webOrder.Id;
+
         return opportunity;
     }
     //endregion
@@ -39,7 +49,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
         List<Schema.FieldSetMember> fieldMembers = fieldSet.getFields();
 
         List<String> fieldPathsList = new List<String>();
-        for(Schema.FieldSetMember field : fieldMembers) {
+        for(Schema.FieldSetMember field: fieldMembers) {
             fieldPathsList.add(field.getFieldPath());
         }
 
@@ -68,7 +78,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
     //region get id colletion methods
     public static List<Id> getOpportunityIdList(List<WebOrder__c> webOrdersList) {
         List<Id> opportunityIdsList = new List<Id>();
-        for(WebOrder__c webOrder : webOrdersList) {
+        for(WebOrder__c webOrder: webOrdersList) {
             if (webOrder.OpportunityId__c == null) { continue; }
 
             opportunityIdsList.add(webOrder.OpportunityId__c);
@@ -79,7 +89,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
 
     public static List<Id> getWebOrderIdList(List<opportunity> opportunityList) {
         List<Id> webOrderIdList = new List<Id>();
-        for(Opportunity opportunity : opportunityList) {
+        for(Opportunity opportunity: opportunityList) {
             if (opportunity.WebOrderId__c == null) { continue; }
 
             webOrderIdList.add(opportunity.WebOrderId__c);
@@ -89,7 +99,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
     }
 
     public static WebOrder__c getWebOrderByOpportunityId(Id opportunityId, List<WebOrder__c> webOrdersList) {
-        for(WebOrder__c webOrder : webOrdersList) {
+        for(WebOrder__c webOrder: webOrdersList) {
             if (webOrder.OpportunityId__c == opportunityId) {
                 return webOrder;
             }
@@ -110,7 +120,12 @@ public with sharing class CopyObjectByFieldSetsHelper {
     //endregion
 
     //region compare methods
-    public static boolean compareOpportunityAndWebObjectFields(Opportunity opportunity, Set<String> fromFieldsList, List<String> toFieldsList, WebOrder__c webOrder) {
+    public static boolean compareOpportunityAndWebObjectFields(
+        Opportunity opportunity, 
+        Set<String> fromFieldsList, 
+        List<String> toFieldsList, 
+        WebOrder__c webOrder
+    ) {
         for(String webOrderField : toFieldsList) {
             String ooprtunityField = getWebOrderFieldApi(webOrderField, fromFieldsList);
 
@@ -122,7 +137,12 @@ public with sharing class CopyObjectByFieldSetsHelper {
         return true;
     }
 
-    public static boolean compareWebObjectAndOpportunityFields(Opportunity opportunity, Set<String> fromFieldsList, List<String> toFieldsList, WebOrder__c webOrder) {
+    public static boolean compareWebObjectAndOpportunityFields(
+        Opportunity opportunity, 
+        Set<String> fromFieldsList, 
+        List<String> toFieldsList, 
+        WebOrder__c webOrder
+    ) {
         for(String ooprtunityField : toFieldsList) {
             String webOrderField = getOpportunityFieldApi(ooprtunityField, fromFieldsList);
 
