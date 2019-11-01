@@ -3,13 +3,13 @@ public with sharing class CopyObjectByFieldSetsHelper {
     public static String FieldNameCustomPart = '__c';
 
     //region patch methods
-    public static WebOrder__c patchWebOrder(
+    public static Web_Order__c patchWebOrder(
         Opportunity opportunity, 
         Set<String> fromFieldsList, 
         List<String> toFieldsList, 
-        WebOrder__c webOrder
+        Web_Order__c webOrder
     ) {
-        webOrder = webOrder != null ? webOrder : new WebOrder__c();
+        webOrder = webOrder != null ? webOrder : new Web_Order__c();
 
         for(String webOrderField: toFieldsList) {
             String ooprtunityField = getWebOrderFieldApi(webOrderField, fromFieldsList);
@@ -27,7 +27,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
         Opportunity opportunity, 
         Set<String> fromFieldsList, 
         List<String> toFieldsList, 
-        WebOrder__c webOrder
+        Web_Order__c webOrder
     ) {
         opportunity = opportunity != null ? opportunity : new Opportunity();
 
@@ -76,9 +76,9 @@ public with sharing class CopyObjectByFieldSetsHelper {
     //endregion
 
     //region get id colletion methods
-    public static List<Id> getOpportunityIdList(List<WebOrder__c> webOrdersList) {
+    public static List<Id> getOpportunityIdList(List<Web_Order__c> webOrdersList) {
         List<Id> opportunityIdsList = new List<Id>();
-        for(WebOrder__c webOrder: webOrdersList) {
+        for(Web_Order__c webOrder: webOrdersList) {
             if (webOrder.OpportunityId__c == null) { continue; }
 
             opportunityIdsList.add(webOrder.OpportunityId__c);
@@ -98,9 +98,9 @@ public with sharing class CopyObjectByFieldSetsHelper {
         return webOrderIdList;
     }
 
-    public static WebOrder__c getWebOrderByOpportunityId(Id opportunityId, List<WebOrder__c> webOrdersList) {
-        for(WebOrder__c webOrder: webOrdersList) {
-            if (webOrder.OpportunityId__c == opportunityId) {
+    public static Web_Order__c getWebOrderByOpportunity(Opportunity opportunity, List<Web_Order__c> webOrdersList) {
+        for(Web_Order__c webOrder: webOrdersList) {
+            if (webOrder.OpportunityId__c == opportunity.Id || webOrder.Id == opportunity.WebOrderId__c) {
                 return webOrder;
             }
         }
@@ -108,9 +108,9 @@ public with sharing class CopyObjectByFieldSetsHelper {
         return null;
     }
 
-    public static Opportunity getOpportunityByWebOrderId(Id webOrderId, List<Opportunity> opportunityList) {
+    public static Opportunity getOpportunityByWebOrder(Web_Order__c webOrder, List<Opportunity> opportunityList) {
         for(Opportunity opportunity : opportunityList) {
-            if (opportunity.WebOrderId__c == webOrderId) {
+            if (opportunity.WebOrderId__c == webOrder.Id || opportunity.Id == webOrder.OpportunityId__c) {
                 return opportunity;
             }
         }
@@ -124,7 +124,7 @@ public with sharing class CopyObjectByFieldSetsHelper {
         Opportunity opportunity, 
         Set<String> fromFieldsList, 
         List<String> toFieldsList, 
-        WebOrder__c webOrder
+        Web_Order__c webOrder
     ) {
         for(String webOrderField : toFieldsList) {
             String ooprtunityField = getWebOrderFieldApi(webOrderField, fromFieldsList);
@@ -141,11 +141,13 @@ public with sharing class CopyObjectByFieldSetsHelper {
         Opportunity opportunity, 
         Set<String> fromFieldsList, 
         List<String> toFieldsList, 
-        WebOrder__c webOrder
+        Web_Order__c webOrder
     ) {
         for(String ooprtunityField : toFieldsList) {
             String webOrderField = getOpportunityFieldApi(ooprtunityField, fromFieldsList);
 
+            System.debug('opportunity field: ' + ooprtunityField + ' value: = ' + opportunity.get(ooprtunityField));
+            System.debug('opportunity field: ' + webOrderField + ' value: = ' + webOrder.get(webOrderField));
             if (opportunity.get(ooprtunityField) != webOrder.get(webOrderField)) {
                 return false;
             }
@@ -154,5 +156,4 @@ public with sharing class CopyObjectByFieldSetsHelper {
         return true;
     }
     //endregion
-    
 }

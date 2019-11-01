@@ -1,8 +1,7 @@
 @isTest
 public with sharing class opportunityActionTriggerTests {
-
-    private static String UpdatePostfix = '_updated';
     private static String StageNameProspecting = 'Prospecting';
+    private static String UpdatePostfix = '_update';
 
     @isTest static void createOneOpportunityTest() {
         String opportunityName = 'createOneOpportunityTest';
@@ -14,13 +13,13 @@ public with sharing class opportunityActionTriggerTests {
 
         Test.startTest();
         Database.SaveResult result = Database.insert(newOpportunity, false);
-        List<WebOrder__c> createdWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c FROM WebOrder__c WHERE OpportunityId__c = :newOpportunity.Id];
+        List<Web_Order__c> createdWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c FROM Web_Order__c WHERE OpportunityId__c = :newOpportunity.Id];
         Test.stopTest();        
 
         System.assert(result.isSuccess());
         System.assertEquals(1, createdWebOrdersList.size());
 
-        WebOrder__c createdWebOrder = createdWebOrdersList[0];
+        Web_Order__c createdWebOrder = createdWebOrdersList[0];
         System.assertEquals(newOpportunity.Name, createdWebOrder.Name);
         System.assertEquals(newOpportunity.CloseDate, createdWebOrder.CloseDate__c);
         System.assertEquals(newOpportunity.StageName, createdWebOrder.StageName__c);
@@ -40,7 +39,7 @@ public with sharing class opportunityActionTriggerTests {
         Test.startTest();
         List<Database.SaveResult> resultList = Database.insert(newOpportunityList, false);
         Set<Id> opportunityIdSet = new Map<Id, Opportunity>(newOpportunityList).keySet();
-        List<WebOrder__c> createdWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c, OpportunityId__c FROM WebOrder__c WHERE OpportunityId__c IN :opportunityIdSet];
+        List<Web_Order__c> createdWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c, OpportunityId__c FROM Web_Order__c WHERE OpportunityId__c IN :opportunityIdSet];
         Test.stopTest();
 
         for(Database.SaveResult result: resultList) {
@@ -48,7 +47,7 @@ public with sharing class opportunityActionTriggerTests {
         }
         System.assertEquals(3, createdWebOrdersList.size());
 
-        for(WebOrder__c webOrder: createdWebOrdersList) {
+        for(Web_Order__c webOrder: createdWebOrdersList) {
             System.assert(newOpportunityList.contains(new Opportunity(
                 Id = webOrder.OpportunityId__c, 
                 Name = webOrder.Name,
@@ -73,7 +72,7 @@ public with sharing class opportunityActionTriggerTests {
         Set<Id> opportunityIdSet = new Map<Id, Opportunity>(newOpportunityList).keySet();
         List<Database.DeleteResult> deleteResultList = Database.delete(newOpportunityList, false);
         List<Opportunity> opportunitiesList = [SELECT Id, Name FROM Opportunity WHERE Id IN :opportunityIdSet];
-        List<WebOrder__c> webOrdersList = [SELECT Id, Name FROM WebOrder__c WHERE OpportunityId__c IN :opportunityIdSet];
+        List<Web_Order__c> webOrdersList = [SELECT Id, Name FROM Web_Order__c WHERE OpportunityId__c IN :opportunityIdSet];
         Test.stopTest();
 
         for(Database.DeleteResult result: deleteResultList) {
@@ -96,7 +95,7 @@ public with sharing class opportunityActionTriggerTests {
         Database.DeleteResult deleteResult = Database.delete(newOpportunity, false);
 
         List<Opportunity> opportunitiesList = [SELECT Id, Name FROM Opportunity WHERE Id = :newOpportunity.Id];
-        List<WebOrder__c> webOrdersList = [SELECT Id, Name FROM WebOrder__c WHERE OpportunityId__c = :newOpportunity.Id];
+        List<Web_Order__c> webOrdersList = [SELECT Id, Name FROM Web_Order__c WHERE OpportunityId__c = :newOpportunity.Id];
         Test.stopTest();
 
         System.assert(deleteResult.isSuccess());
@@ -119,7 +118,7 @@ public with sharing class opportunityActionTriggerTests {
         Database.SaveResult result = Database.update(newOpportunity, false);
 
         List<Opportunity> updatedOpportunityList = [SELECT Id, Name, CloseDate, StageName FROM Opportunity WHERE Id = :newOpportunity.Id];
-        List<WebOrder__c> updatedWebOrderList = [SELECT Id, Name, CloseDate__c, StageName__c FROM WebOrder__c WHERE OpportunityId__c = :newOpportunity.Id];
+        List<Web_Order__c> updatedWebOrderList = [SELECT Id, Name, CloseDate__c, StageName__c FROM Web_Order__c WHERE OpportunityId__c = :newOpportunity.Id];
         Test.stopTest();        
 
         System.assert(result.isSuccess());
@@ -129,7 +128,7 @@ public with sharing class opportunityActionTriggerTests {
         Opportunity updatedOpportunity = updatedOpportunityList[0];
         System.assertEquals(newOpportunity.Name, updatedOpportunity.Name);
 
-        WebOrder__c updatedWebOrder = updatedWebOrderList[0];
+        Web_Order__c updatedWebOrder = updatedWebOrderList[0];
         System.assertEquals(newOpportunity.Name, updatedWebOrder.Name);
     }
 
@@ -154,7 +153,7 @@ public with sharing class opportunityActionTriggerTests {
 
         Set<Id> opportunityIdSet = new Map<Id, Opportunity>(newOpportunityList).keySet();
         List<Opportunity> updatedOpportunityList = [SELECT Id, Name, CloseDate, StageName FROM Opportunity WHERE Id IN :opportunityIdSet];
-        List<WebOrder__c> updatedWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c, OpportunityId__c FROM WebOrder__c WHERE OpportunityId__c IN :opportunityIdSet];
+        List<Web_Order__c> updatedWebOrdersList = [SELECT Id, Name, CloseDate__c, StageName__c, OpportunityId__c FROM Web_Order__c WHERE OpportunityId__c IN :opportunityIdSet];
         Test.stopTest();
 
         for(Database.SaveResult result: resultList) {
@@ -163,7 +162,7 @@ public with sharing class opportunityActionTriggerTests {
         System.assertEquals(3, updatedOpportunityList.size());
         System.assertEquals(3, updatedWebOrdersList.size());
 
-        for(WebOrder__c webOrder: updatedWebOrdersList) {
+        for(Web_Order__c webOrder: updatedWebOrdersList) {
             System.assert(newOpportunityList.contains(new Opportunity(
                 Id = webOrder.OpportunityId__c, 
                 Name = webOrder.Name,

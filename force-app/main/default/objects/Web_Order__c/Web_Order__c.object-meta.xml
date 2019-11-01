@@ -155,10 +155,10 @@
     <enableStreamingApi>true</enableStreamingApi>
     <label>Web Order</label>
     <nameField>
-        <label>WebOrder Name</label>
+        <label>Web Order Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>WebOrders</pluralLabel>
+    <pluralLabel>Web Orders</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
